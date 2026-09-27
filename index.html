@@ -103,7 +103,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .mobile-bottom-nav{display:none}
 
 @media(max-width:900px){
-  body{padding-bottom:calc(72px + var(--safe-bottom))}
+  body{padding-bottom:var(--safe-bottom)}
   .app{display:block;min-height:100vh}
   .sidebar{
     position:fixed;left:0;top:0;bottom:0;width:min(86vw,340px);height:100vh;
@@ -135,7 +135,21 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   .toolbar .btn{width:100%;min-height:46px}
   .header-card{padding:14px;border-radius:13px;margin-bottom:10px}
   .header-grid,.grid2,.grid3{grid-template-columns:1fr}
-  .tabs{display:none}
+  .tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+    margin:10px 0 12px;
+    position:static;
+  }
+  .tab{
+    width:100%;
+    min-height:46px;
+    padding:10px 6px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:700;
+  }
   .card{padding:14px;border-radius:13px;margin-bottom:10px}
   .card h2{font-size:17px;line-height:1.4}
   .field{margin-bottom:14px}
@@ -145,16 +159,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   .row-actions .mini{flex:1}
   .table-wrap{display:none}
   .mobile-scene-list{display:block}
-  .mobile-bottom-nav{
-    display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:35;
-    padding:7px 8px calc(7px + var(--safe-bottom));background:rgba(255,255,255,.97);
-    backdrop-filter:blur(12px);border-top:1px solid var(--line);gap:6px
-  }
-  .mobile-bottom-nav button{
-    min-height:48px;border:0;border-radius:11px;background:transparent;color:var(--muted);
-    font-size:12px;font-weight:700
-  }
-  .mobile-bottom-nav button.active{background:var(--accent2);color:var(--accent)}
+  .mobile-bottom-nav{display:none!important}
   .pill{display:block;width:max-content;margin:4px 0 0}
 }
 
@@ -389,11 +394,6 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   </main>
 </div>
 
-<nav class="mobile-bottom-nav" aria-label="編集セクション">
-  <button class="mobile-tab active" data-tab="proposal">企画書</button>
-  <button class="mobile-tab" data-tab="design">設計書</button>
-  <button class="mobile-tab" data-tab="scenes">シーン</button>
-</nav>
 
 
 <div class="modal-backdrop" id="bridgeModal">
