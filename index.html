@@ -11,1048 +11,143 @@
 <link rel="apple-touch-icon" href="icon-192.png" />
 <title>SF Story Planner</title>
 <style>
-
-:root{
-  --bg:#f6f7fb; --panel:#ffffff; --line:#dfe3ea; --text:#1f2937; --muted:#6b7280;
-  --accent:#334155; --accent2:#e8edf4; --danger:#b91c1c; --ok:#166534;
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
-  background:var(--bg); color:var(--text);
-  -webkit-text-size-adjust:100%;
-}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;-webkit-tap-highlight-color:transparent}
-input,textarea,select{font-size:16px}
-.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
-.sidebar{
-  background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto;z-index:50
-}
-.brand{font-weight:800;font-size:20px;margin-bottom:6px}
-.sub{font-size:12px;color:#9ca3af;margin-bottom:18px;line-height:1.5}
-.side-btn{
-  width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:10px;margin:4px 0;background:#1f2937;color:white;text-align:left
-}
-.side-btn:hover{background:#374151}
-.project-item{padding:11px 12px;border-radius:10px;margin:5px 0;background:transparent;border:1px solid transparent}
-.project-item:hover{background:#1f2937}
-.project-item.active{background:#334155;border-color:#475569}
-.project-title{font-weight:700}
-.project-meta{font-size:11px;color:#cbd5e1;margin-top:4px}
-.main{padding:24px;min-width:0}
-.mobile-topbar{display:none}
-.mobile-overlay{display:none}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-.toolbar .spacer{flex:1}
-.btn{
-  min-height:42px;border:1px solid var(--line);background:white;border-radius:10px;padding:9px 12px;color:var(--text)
-}
-.btn:hover{background:#f3f4f6}
-.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
-.btn.danger{color:var(--danger)}
-.status{font-size:12px;color:var(--muted)}
-.header-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
-.header-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
-label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700}
-input[type=text],input[type=number],textarea,select{
-  width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:white;color:var(--text)
-}
-input:focus,textarea:focus,select:focus{outline:2px solid #94a3b8;outline-offset:1px;border-color:#94a3b8}
-textarea{min-height:110px;resize:vertical;line-height:1.65}
-.tabs{display:flex;gap:8px;margin:16px 0 12px;flex-wrap:wrap}
-.tab{border:1px solid var(--line);background:white;padding:10px 14px;border-radius:999px;min-height:42px}
-.tab.active{background:var(--accent);color:white;border-color:var(--accent)}
-.section{display:none}
-.section.active{display:block}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
-.card h2{font-size:18px;margin:0 0 14px}
-.card h3{font-size:15px;margin:18px 0 10px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.field{margin-bottom:12px}
-.small{font-size:12px;color:var(--muted);line-height:1.6}
-.pill{display:inline-block;font-size:11px;background:var(--accent2);padding:4px 8px;border-radius:999px;margin-left:6px;color:#475569}
-.character-card{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:#fafafa}
-.row-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
-.mini{min-height:38px;padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:white;font-size:12px}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:white}
-table{border-collapse:collapse;width:100%;min-width:1100px}
-th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:8px;vertical-align:top}
-th{background:#f8fafc;font-size:12px;position:sticky;top:0;z-index:1}
-td:last-child,th:last-child{border-right:0}
-td input,td textarea{border:0;border-radius:0;padding:4px;background:transparent;font-size:14px}
-td textarea{min-height:70px}
-.scene-num{width:58px}
-.scene-actions{white-space:nowrap;min-width:145px}
-.mobile-scene-list{display:none}
-.mobile-scene-card{
-  background:white;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;
-  box-shadow:0 1px 2px rgba(15,23,42,.03)
-}
-.mobile-scene-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.mobile-scene-number{font-weight:800;font-size:15px}
-.mobile-scene-head .spacer{flex:1}
-.mobile-scene-card .field{margin-bottom:10px}
-.mobile-scene-card textarea{min-height:84px}
-.empty{text-align:center;padding:60px 20px;color:var(--muted)}
-hr{border:0;border-top:1px solid var(--line);margin:18px 0}
-.mobile-bottom-nav{display:none}
-
-@media(max-width:900px){
-  body{padding-bottom:var(--safe-bottom)}
-  .app{display:block;min-height:100vh}
-  .sidebar{
-    position:fixed;left:0;top:0;bottom:0;width:min(86vw,340px);height:100vh;
-    transform:translateX(-105%);transition:transform .2s ease;box-shadow:12px 0 30px rgba(0,0,0,.18)
-  }
-  .sidebar.open{transform:translateX(0)}
-  .mobile-overlay{
-    display:block;position:fixed;inset:0;background:rgba(15,23,42,.38);z-index:40;
-    opacity:0;pointer-events:none;transition:opacity .2s ease
-  }
-  .mobile-overlay.show{opacity:1;pointer-events:auto}
-  .main{padding:78px 12px 14px}
-  .mobile-topbar{
-    display:flex;position:fixed;top:0;left:0;right:0;z-index:30;
-    min-height:62px;padding:8px 10px;gap:8px;align-items:center;
-    background:rgba(246,247,251,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)
-  }
-  .mobile-menu-btn{
-    width:44px;height:44px;border:1px solid var(--line);border-radius:11px;background:white;font-size:20px
-  }
-  .mobile-title-wrap{min-width:0;flex:1}
-  .mobile-title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mobile-sub{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mobile-save{font-size:11px;color:var(--muted);white-space:nowrap}
-  .toolbar{
-    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px
-  }
-  .toolbar .spacer,.toolbar .status{display:none}
-  .toolbar .btn{width:100%;min-height:46px}
-  .header-card{padding:14px;border-radius:13px;margin-bottom:10px}
-  .header-grid,.grid2,.grid3{grid-template-columns:1fr}
-  .tabs{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:6px;
-    margin:10px 0 12px;
-    position:static;
-  }
-  .tab{
-    width:100%;
-    min-height:46px;
-    padding:10px 6px;
-    border-radius:12px;
-    font-size:13px;
-    font-weight:700;
-  }
-  .card{padding:14px;border-radius:13px;margin-bottom:10px}
-  .card h2{font-size:17px;line-height:1.4}
-  .field{margin-bottom:14px}
-  textarea{min-height:128px}
-  .character-card{padding:12px}
-  .row-actions{justify-content:stretch}
-  .row-actions .mini{flex:1}
-  .table-wrap{display:none}
-  .mobile-scene-list{display:block}
-  .mobile-bottom-nav{display:none!important}
-  .pill{display:block;width:max-content;margin:4px 0 0}
-}
-
-@media(max-width:430px){
-  .main{padding-left:10px;padding-right:10px}
-  .toolbar{grid-template-columns:1fr 1fr}
-  .btn{padding:9px 8px}
-  .card,.header-card{padding:12px}
-  .mobile-save{display:none}
-}
-
-@media print{
-  .sidebar,.toolbar,.tabs,.row-actions,.no-print,.mobile-topbar,.mobile-overlay,.mobile-bottom-nav{display:none!important}
-  body{padding-bottom:0}
-  .app{display:block}
-  .main{padding:0}
-  .section{display:block!important}
-  .card,.header-card{break-inside:avoid;border-color:#bbb}
-  .table-wrap{display:block!important}
-  .mobile-scene-list{display:none!important}
-  body{background:white}
-}
-
-
-.chatgpt-btn{
-  background:#0f172a!important;color:white!important;border-color:#0f172a!important;font-weight:800
-}
-.modal-backdrop{
-  position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.48);display:none;
-  align-items:flex-end;justify-content:center;padding:16px
-}
-.modal-backdrop.show{display:flex}
-.modal{
-  width:min(760px,100%);max-height:88vh;overflow:auto;background:white;border-radius:18px 18px 12px 12px;
-  padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.22)
-}
-.modal h2{margin:0 0 6px;font-size:20px}
-.modal h3{margin:18px 0 8px;font-size:15px}
-.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.modal-actions .btn{flex:1}
-.prompt-box{min-height:170px;font-size:14px;background:#f8fafc}
-.integration-steps{margin:10px 0 0;padding-left:22px;line-height:1.7;color:#475569;font-size:14px}
-.patch-preview{
-  margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc;
-  padding:12px;max-height:260px;overflow:auto;font-size:13px;line-height:1.55;white-space:pre-wrap
-}
-.toast{
-  position:fixed;left:50%;bottom:calc(84px + var(--safe-bottom));transform:translateX(-50%);
-  background:#111827;color:white;padding:10px 14px;border-radius:999px;font-size:13px;z-index:150;
-  opacity:0;pointer-events:none;transition:.2s
-}
-.toast.show{opacity:1}
-.backup-note{
-  background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:12px;padding:10px 12px;
-  font-size:12px;line-height:1.55;margin-bottom:12px;display:none
-}
-.backup-note.show{display:block}
-@media(max-width:900px){
-  .modal-backdrop{padding:0;align-items:flex-end}
-  .modal{border-radius:20px 20px 0 0;padding:16px 14px calc(16px + var(--safe-bottom))}
-  .modal-actions{display:grid;grid-template-columns:1fr}
-  .toolbar .chatgpt-btn{grid-column:1/-1}
-}
-
+:root{--bg:#f6f7fb;--panel:#fff;--line:#dfe3ea;--text:#1f2937;--muted:#6b7280;--accent:#334155;--accent2:#e8edf4;--danger:#b91c1c;--safe:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;background:var(--bg);color:var(--text);-webkit-text-size-adjust:100%}button,input,textarea,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}input,textarea,select{font-size:16px}.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}.sidebar{background:#111827;color:#fff;padding:18px;position:sticky;top:0;height:100vh;overflow:auto;z-index:50}.brand{font-weight:800;font-size:20px}.sub{font-size:12px;color:#9ca3af;margin:6px 0 18px;line-height:1.5}.side-btn{width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:10px;margin:4px 0;background:#1f2937;color:#fff;text-align:left}.project-item{padding:11px 12px;border-radius:10px;margin:5px 0;border:1px solid transparent}.project-item.active{background:#334155;border-color:#475569}.project-title{font-weight:700}.project-meta{font-size:11px;color:#cbd5e1;margin-top:4px}.main{padding:24px;min-width:0}.mobile-topbar,.mobile-overlay{display:none}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.toolbar .spacer{flex:1}.btn,.mini{border:1px solid var(--line);background:#fff;border-radius:10px;color:var(--text)}.btn{min-height:42px;padding:9px 12px}.mini{min-height:36px;padding:6px 9px;font-size:12px}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.danger,.mini.danger{color:var(--danger)}.chatgpt-btn{background:#0f172a!important;color:#fff!important;border-color:#0f172a!important;font-weight:800}.status,.small{font-size:12px;color:var(--muted);line-height:1.6}.header-card,.card,.section-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px}.header-card,.card{padding:18px}.header-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}.field{margin-bottom:12px;position:relative}label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700}input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;color:var(--text)}input:focus,textarea:focus,select:focus{outline:2px solid #94a3b8;outline-offset:1px;border-color:#94a3b8}textarea{min-height:105px;resize:vertical;line-height:1.65}.char-count{text-align:right;font-size:11px;color:#9ca3af;margin-top:4px;min-height:14px}.tabs{display:flex;gap:8px;margin:16px 0 12px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:999px;min-height:42px}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}.section{display:none}.section.active{display:block}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.pill{display:inline-block;font-size:11px;background:var(--accent2);padding:4px 8px;border-radius:999px;margin-left:6px;color:#475569}.section-card>summary,.scene-card>summary,.character-card>summary,.optional-block>summary{list-style:none;cursor:pointer}.section-card>summary::-webkit-details-marker,.scene-card>summary::-webkit-details-marker,.character-card>summary::-webkit-details-marker,.optional-block>summary::-webkit-details-marker{display:none}.section-card>summary{padding:16px 18px;font-weight:800;display:flex;align-items:center;gap:8px}.section-card>summary::after,.character-card>summary::after,.scene-card>summary::after,.optional-block>summary::after{content:"＋";margin-left:auto;color:var(--muted)}.section-card[open]>summary::after,.character-card[open]>summary::after,.scene-card[open]>summary::after,.optional-block[open]>summary::after{content:"−"}.section-body{padding:0 18px 18px}.optional-block{border:1px dashed var(--line);border-radius:12px;margin:10px 0;background:#fafafa}.optional-block>summary{padding:11px 12px;font-size:13px;font-weight:700;color:#475569;display:flex;gap:8px}.optional-body{padding:0 12px 12px}.character-card{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fafafa}.character-card>summary{padding:12px 14px;display:flex;align-items:center;gap:8px}.character-card .character-title{font-weight:800}.character-body{padding:0 14px 14px}.row-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}.scene-list{display:grid;gap:10px}.scene-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}.scene-card>summary{display:flex;align-items:center;gap:10px;padding:13px 14px}.scene-no{font-weight:800;font-size:13px;background:var(--accent2);padding:5px 8px;border-radius:999px;white-space:nowrap}.scene-summary-main{min-width:0;flex:1}.scene-summary-title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scene-summary-meta{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}.scene-body{padding:2px 14px 14px;border-top:1px solid #eef1f5}.scene-actions{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}.empty{text-align:center;padding:60px 20px;color:var(--muted)}hr{border:0;border-top:1px solid var(--line);margin:18px 0}.backup-note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.55;margin-bottom:12px;display:none}.backup-note.show{display:block}.modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.48);display:none;align-items:flex-end;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{width:min(760px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:18px 18px 12px 12px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.22)}.modal h2{margin:0 0 6px}.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.modal-actions .btn{flex:1}.prompt-box{min-height:170px;font-size:14px;background:#f8fafc}.patch-preview{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc;padding:12px;max-height:260px;overflow:auto;font-size:13px;line-height:1.55;white-space:pre-wrap}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 14px;border-radius:999px;font-size:13px;z-index:150;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+@media(max-width:900px){.app{display:block}.sidebar{position:fixed;left:0;top:0;bottom:0;width:min(86vw,340px);height:100vh;transform:translateX(-105%);transition:.2s;box-shadow:12px 0 30px rgba(0,0,0,.18)}.sidebar.open{transform:translateX(0)}.mobile-overlay{display:block;position:fixed;inset:0;background:rgba(15,23,42,.38);z-index:40;opacity:0;pointer-events:none;transition:.2s}.mobile-overlay.show{opacity:1;pointer-events:auto}.mobile-topbar{display:flex;position:fixed;top:0;left:0;right:0;z-index:30;min-height:62px;padding:8px 10px;gap:8px;align-items:center;background:rgba(246,247,251,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.mobile-menu-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:20px}.mobile-title-wrap{min-width:0;flex:1}.mobile-title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mobile-sub{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mobile-save{font-size:11px;color:var(--muted);white-space:nowrap}.main{padding:76px 10px 18px}.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toolbar .spacer,.toolbar .status{display:none}.toolbar .btn{width:100%;min-height:46px}.toolbar .chatgpt-btn{grid-column:1/-1}.header-card,.card{padding:12px}.header-grid,.grid2,.grid3{grid-template-columns:1fr}.tabs{position:sticky;top:62px;z-index:20;background:rgba(246,247,251,.95);backdrop-filter:blur(10px);padding:8px 0;margin:4px 0 10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.tab{padding:8px 6px;border-radius:10px;font-size:12px}.section-card>summary{padding:14px}.section-body{padding:0 12px 12px}.scene-card>summary{padding:12px}.row-actions{justify-content:stretch}.row-actions .mini{flex:1}.modal-backdrop{padding:0}.modal{border-radius:20px 20px 0 0;padding:16px 14px calc(16px + var(--safe))}.modal-actions{display:grid;grid-template-columns:1fr}.pill{display:block;width:max-content;margin:4px 0 0}}
+@media(max-width:430px){.mobile-save{display:none}.scene-actions .mini{flex:1}.scene-summary-meta{max-width:70vw}}
+@media print{.sidebar,.toolbar,.tabs,.row-actions,.scene-actions,.no-print,.mobile-topbar,.mobile-overlay{display:none!important}.main{padding:0}.section{display:block!important}.section-card,.character-card,.scene-card{break-inside:avoid}.section-card,.character-card,.scene-card{display:block!important}.section-card>.section-body,.character-card>.character-body,.scene-card>.scene-body{display:block!important}body{background:#fff}}
 </style>
 </head>
 <body>
 <div class="mobile-overlay" id="mobileOverlay"></div>
-<div class="mobile-topbar">
-  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="作品メニュー">☰</button>
-  <div class="mobile-title-wrap">
-    <div class="mobile-title" id="mobileProjectTitle">SF Story Planner</div>
-    <div class="mobile-sub" id="mobileProjectMeta">作品を選択</div>
-  </div>
-  <div class="mobile-save" id="mobileSaveStatus">保存済み</div>
-</div>
+<div class="mobile-topbar"><button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="作品メニュー">☰</button><div class="mobile-title-wrap"><div class="mobile-title" id="mobileProjectTitle">SF Story Planner</div><div class="mobile-sub" id="mobileProjectMeta">作品を選択</div></div><div class="mobile-save" id="mobileSaveStatus">保存済み</div></div>
 <div class="app">
-  <aside class="sidebar">
-    <div class="brand">SF Story Planner</div>
-    <div class="sub">企画書・物語設計書・シーン表を、作品単位で管理するローカルアプリです。<br><span style="opacity:.7">v4</span></div>
-    <button class="side-btn" id="newProjectBtn">＋ 新しい作品</button>
-    <button class="side-btn" id="backupAllBtn">⇩ 全作品バックアップ</button>
-    <button class="side-btn" id="importBtn">⇧ JSONを読み込む</button>
-    <input type="file" id="fileInput" accept="application/json" hidden />
-    <hr style="border-color:#374151">
-    <div id="projectList"></div>
-  </aside>
-
-  <main class="main">
-    <div id="emptyState" class="empty">作品メニューから作品を選ぶか、新しい作品を作成してください。<br><br><button class="btn primary" id="emptyMenuBtn" type="button">作品メニューを開く</button></div>
-
-    <div id="editor" hidden>
-      <div id="backupReminder" class="backup-note">
-        最後のJSONバックアップから日数が空いています。作品データは端末内に保存されるため、定期的に「全作品バックアップ」をFiles / iCloud Driveへ保存してください。
-      </div>
-      <div class="toolbar">
-        <button class="btn chatgpt-btn" id="chatgptBridgeBtn">✦ ChatGPT連携</button>
-        <button class="btn" id="duplicateBtn">複製</button>
-        <button class="btn" id="exportProjectBtn">作品JSON</button>
-        <button class="btn" id="exportMarkdownBtn">Markdown</button>
-        <button class="btn" onclick="window.print()">印刷 / PDF</button>
-        <div class="spacer"></div>
-        <span id="saveStatus" class="status">保存済み</span>
-        <button class="btn danger" id="deleteProjectBtn">作品を削除</button>
-      </div>
-
-      <div class="header-card">
-        <div class="header-grid">
-          <div>
-            <label>作品名</label>
-            <input id="projectTitle" type="text">
-          </div>
-          <div>
-            <label>ジャンル</label>
-            <input id="projectGenre" type="text" placeholder="例：近未来SF / 心理SF">
-          </div>
-          <div>
-            <label>想定文字数</label>
-            <input id="projectLength" type="text" placeholder="例：20,000〜25,000字">
-          </div>
-        </div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" data-tab="proposal">企画書</button>
-        <button class="tab" data-tab="design">物語設計書</button>
-        <button class="tab" data-tab="scenes">シーン表</button>
-      </div>
-
-      <section id="proposal" class="section active">
-        <div class="card">
-          <h2>1ページ企画書 <span class="pill">作品の憲法</span></h2>
-          <div class="field"><label>一行企画</label><textarea data-path="proposal.oneLine"></textarea></div>
-          <div class="grid2">
-            <div class="field"><label>主人公</label><textarea data-path="proposal.protagonist"></textarea></div>
-            <div class="field"><label>中心となる問い</label><textarea data-path="proposal.centralQuestion"></textarea></div>
-          </div>
-          <div class="grid2">
-            <div class="field"><label>表面的な物語</label><textarea data-path="proposal.surfaceStory"></textarea></div>
-            <div class="field"><label>本当の物語</label><textarea data-path="proposal.trueStory"></textarea></div>
-          </div>
-          <div class="grid2">
-            <div class="field"><label>最大の売り</label><textarea data-path="proposal.sellingPoint"></textarea></div>
-            <div class="field"><label>読後感</label><textarea data-path="proposal.aftertaste"></textarea></div>
-          </div>
-          <div class="grid2">
-            <div class="field"><label>絶対に入れる場面</label><textarea data-path="proposal.mustScenes" placeholder="1行に1つ"></textarea></div>
-            <div class="field"><label>この作品では扱わないこと</label><textarea data-path="proposal.exclusions" placeholder="説明過多を防ぐための削除欄"></textarea></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="design" class="section">
-        <div class="card">
-          <h2>A. テーマ設計</h2>
-          <div class="field"><label>作品が投げかける問い</label><textarea data-path="design.themeQuestions" placeholder="問いの形で3〜5個"></textarea></div>
-          <div class="field"><label>対立する価値観・立場</label><textarea data-path="design.valueConflict"></textarea></div>
-          <div class="field"><label>作品として答えを出しすぎないための余白</label><textarea data-path="design.ambiguity"></textarea></div>
-        </div>
-
-        <div class="card">
-          <h2>B. 人物設計</h2>
-          <div id="characterList"></div>
-          <button class="btn no-print" id="addCharacterBtn">＋ 登場人物を追加</button>
-          <p class="small">各人物は「欲望・恐怖・誤認・変化」を中心にすると、プロフィール作りが目的化しにくくなります。</p>
-        </div>
-
-        <div class="card">
-          <h2>C. 世界設定</h2>
-          <div class="grid2">
-            <div class="field"><label>1. この技術・制度は何ができる？</label><textarea data-path="design.world.canDo"></textarea></div>
-            <div class="field"><label>2. 何ができない？ / 制約は？</label><textarea data-path="design.world.cannotDo"></textarea></div>
-            <div class="field"><label>3. 社会はどう受け入れている？</label><textarea data-path="design.world.society"></textarea></div>
-            <div class="field"><label>4. 普通の人の日常はどう変わった？</label><textarea data-path="design.world.dailyLife"></textarea></div>
-          </div>
-          <div class="field"><label>5. 主人公だけに何が問題になる？</label><textarea data-path="design.world.protagonistProblem"></textarea></div>
-        </div>
-
-        <div class="card">
-          <h2>D. 構造設計</h2>
-          <div class="grid3">
-            <div class="field"><label>開始時の状態</label><textarea data-path="design.structure.start"></textarea></div>
-            <div class="field"><label>異変</label><textarea data-path="design.structure.inciting"></textarea></div>
-            <div class="field"><label>深化</label><textarea data-path="design.structure.deepening"></textarea></div>
-            <div class="field"><label>決定的事件</label><textarea data-path="design.structure.crisis"></textarea></div>
-            <div class="field"><label>再解釈 / 転換</label><textarea data-path="design.structure.reframe"></textarea></div>
-            <div class="field"><label>結末</label><textarea data-path="design.structure.ending"></textarea></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>E. モチーフ</h2>
-          <div class="field"><label>繰り返す具体物・場所・行為</label><textarea data-path="design.motifs" placeholder="例：時計、薬、誕生日プレゼント"></textarea></div>
-          <div class="field"><label>それぞれが何を象徴するか</label><textarea data-path="design.motifMeaning"></textarea></div>
-        </div>
-
-        <div class="card">
-          <h2>作品固有設計</h2>
-          <div class="field"><label>この作品専用の対応表・反転構造・対比軸</label><textarea data-path="design.customFramework" placeholder="アナザーワン：夫視点 / 妻視点 / 読者の初回解釈 / 後から変わる意味&#10;イヤーカフ：社会で当たり前 / 失われたもの / 主人公が再発見するもの"></textarea></div>
-        </div>
-      </section>
-
-      <section id="scenes" class="section">
-        <div class="card">
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <h2 style="margin-right:auto">シーン表 <span class="pill">15〜25シーン目安</span></h2>
-            <button class="btn no-print" id="addSceneBtn">＋ シーン追加</button>
-          </div>
-          <p class="small">各シーンで「何かが変わる」ことを意識します。順番は上下ボタンで入れ替えられます。</p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th class="scene-num">#</th>
-                  <th>視点</th>
-                  <th>場所</th>
-                  <th>目的</th>
-                  <th>起こること</th>
-                  <th>感情変化</th>
-                  <th>読者に与える情報</th>
-                  <th>伏線・回収</th>
-                  <th class="scene-actions no-print">操作</th>
-                </tr>
-              </thead>
-              <tbody id="sceneBody"></tbody>
-            </table>
-          </div>
-          <div id="mobileSceneList" class="mobile-scene-list"></div>
-        </div>
-      </section>
-    </div>
-  </main>
-</div>
-
-
-
-<div class="modal-backdrop" id="bridgeModal">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bridgeTitle">
-    <h2 id="bridgeTitle">ChatGPT連携</h2>
-    <div class="small">Story PlannerとChatGPTの間をJSONファイルで往復します。直接連携ではないので、作品データの主保存先はこのアプリのままです。</div>
-
-    <h3>1. ChatGPTへ渡す</h3>
-    <label>反映したい範囲</label>
-    <select id="bridgeScope">
-      <option value="proposal">企画書をブラッシュアップ</option>
-      <option value="design">企画書＋物語設計書をブラッシュアップ</option>
-      <option value="scenes">シーン表を作成・改善</option>
-      <option value="all" selected>作品全体を見直す</option>
-    </select>
-    <div class="field" style="margin-top:10px">
-      <label>追加で頼みたいこと（任意）</label>
-      <textarea id="bridgeRequest" placeholder="例：夫視点と妻視点の反転が弱い箇所を補強。娘視点は追加しない。"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn primary" id="downloadContextBtn">ChatGPT用ファイルを作る</button>
-      <button class="btn" id="copyPromptBtn">指示文をコピー</button>
-    </div>
-
-    <ol class="integration-steps">
-      <li>「ChatGPT用ファイルを作る」でJSONを保存</li>
-      <li>ChatGPTにそのJSONを添付し、コピーした指示文を送る</li>
-      <li>ChatGPTから <b>story_planner_patch.json</b> を受け取る</li>
-      <li>下の「更新JSONを読み込む」から反映</li>
-    </ol>
-
-    <h3>2. ChatGPTから反映</h3>
-    <div class="modal-actions">
-      <button class="btn" id="importPatchBtn">更新JSONを読み込む</button>
-      <button class="btn" id="showPatchSpecBtn">更新JSON仕様を見る</button>
-    </div>
-    <input type="file" id="patchFileInput" accept="application/json,.json" hidden />
-    <div id="patchPreview" class="patch-preview" hidden></div>
-    <div id="patchApplyActions" class="modal-actions" hidden>
-      <button class="btn primary" id="applyPatchBtn">この変更を反映</button>
-      <button class="btn" id="cancelPatchBtn">取り消す</button>
-    </div>
-
-    <div class="modal-actions" style="margin-top:20px">
-      <button class="btn" id="closeBridgeBtn">閉じる</button>
-    </div>
-  </div>
-</div>
+<aside class="sidebar"><div class="brand">SF Story Planner</div><div class="sub">作品の型を押しつけず、必要な設計だけ使うストーリープランナー。<br><span style="opacity:.7">v9</span></div><button class="side-btn" id="newProjectBtn">＋ 新しい作品</button><button class="side-btn" id="backupAllBtn">⇩ 全作品バックアップ</button><button class="side-btn" id="importBtn">⇧ JSONを読み込む</button><input type="file" id="fileInput" accept="application/json" hidden><hr style="border-color:#374151"><div id="projectList"></div></aside>
+<main class="main">
+<div id="emptyState" class="empty">作品メニューから作品を選ぶか、新しい作品を作成してください。<br><br><button class="btn primary" id="emptyMenuBtn">作品メニューを開く</button></div>
+<div id="editor" hidden>
+<div id="backupReminder" class="backup-note">最後のJSONバックアップから日数が空いています。端末内保存なので、定期的にバックアップしてください。</div>
+<div class="toolbar"><button class="btn chatgpt-btn" id="chatgptBridgeBtn">✦ ChatGPT連携</button><button class="btn" id="duplicateBtn">複製</button><button class="btn" id="exportProjectBtn">作品JSON</button><button class="btn" id="exportMarkdownBtn">Markdown</button><button class="btn" onclick="window.print()">印刷 / PDF</button><div class="spacer"></div><span id="saveStatus" class="status">保存済み</span><button class="btn danger" id="deleteProjectBtn">作品を削除</button></div>
+<div class="header-card"><div class="header-grid"><div class="field"><label>作品名</label><input id="projectTitle" type="text"></div><div class="field"><label>ジャンル</label><input id="projectGenre" type="text" placeholder="例：近未来SF / 心理SF"></div><div class="field"><label>想定文字数</label><input id="projectLength" type="text" placeholder="例：20,000〜25,000字"></div></div></div>
+<div class="tabs"><button class="tab active" data-tab="proposal">企画書</button><button class="tab" data-tab="design">設計書</button><button class="tab" data-tab="scenes">シーン</button></div>
+<section id="proposal" class="section active">
+<details class="section-card" open><summary>企画の核 <span class="pill">まずはここだけ</span></summary><div class="section-body">
+<div class="field"><label>一行企画</label><textarea data-path="proposal.oneLine" placeholder="誰が、どんな状況で、何に直面する物語か"></textarea></div>
+<div class="field"><label>ストーリー / あらすじ</label><textarea data-path="proposal.surfaceStory" placeholder="数行で自由に。構成技法に合わせる必要はありません"></textarea></div>
+<div class="grid2"><div class="field"><label>中心人物の一言像</label><textarea data-path="proposal.protagonist" placeholder="誰を追う物語か。人物像を1〜3行で。複数主人公でも可"></textarea></div><div class="field"><label>テーマ / 中心となる問い</label><textarea data-path="proposal.centralQuestion" placeholder="答えではなく問いでもOK"></textarea></div></div>
+<div class="field"><label>読後に残したいもの / 余韻 <span class="small">（決まっていれば）</span></label><textarea data-path="proposal.aftertaste" placeholder="感情、問い、違和感、希望、怖さなど"></textarea></div>
+</div></details>
+<details class="section-card"><summary>企画の補助項目 <span class="pill">必要な作品だけ</span></summary><div class="section-body">
+<div class="field"><label>この作品ならではの魅力 / 売り</label><textarea data-path="proposal.sellingPoint"></textarea></div>
+<div class="field"><label>執筆方針・留意点</label><textarea data-path="proposal.exclusions" placeholder="例：説明しすぎない / 特定人物の視点だけで描く / 技術設定を前面に出しすぎない"></textarea></div>
+</div></details>
+</section>
+<section id="design" class="section">
+<details class="section-card"><summary>テーマをもう少し考える <span class="pill">任意</span></summary><div class="section-body"><div class="field"><label>対立・矛盾・両立しにくい価値</label><textarea data-path="design.valueConflict" placeholder="例：自由と安全、理解と想像、個人と家族"></textarea></div><div class="field"><label>あえて決め切らないこと / 余白</label><textarea data-path="design.ambiguity" placeholder="作品の中で断定せず、読者に残す部分"></textarea></div></div></details>
+<details class="section-card" open><summary>人物 <span class="pill">内面＋外から見える特徴</span></summary><div class="section-body"><div id="characterList"></div><button class="btn no-print" id="addCharacterBtn">＋ 登場人物を追加</button><p class="small">望み・恐怖・自己認識・変化を軸にします。容姿や癖は、物語で使う特徴だけ書けば十分です。</p></div></details>
+<details class="section-card" open><summary>世界 / SF設定 <span class="pill">3項目で十分</span></summary><div class="section-body">
+<div class="field"><label>この世界で現実と違うこと / 核となる前提</label><textarea data-path="design.world.canDo"></textarea></div>
+<div class="field"><label>ルール・限界・代償</label><textarea data-path="design.world.cannotDo"></textarea></div>
+<div class="field"><label>社会・暮らしにどう影響するか</label><textarea data-path="design.world.society" placeholder="制度・仕事・家庭・日常・価値観などへの影響"></textarea></div>
+<details class="optional-block"><summary>人物への影響まで考える</summary><div class="optional-body"><div class="field"><label>主役 / 登場人物にとっての問題</label><textarea data-path="design.world.protagonistProblem" placeholder="この世界設定が、この人物にどう刺さるか"></textarea></div></div></details>
+</div></details>
+<details class="section-card" open><summary>物語の骨格 <span class="pill">ゆるい起承転結</span></summary><div class="section-body"><div class="grid2"><div class="field"><label>起｜導入・入口</label><textarea data-path="design.structure.start" placeholder="どんな状況・人物から物語に入るか"></textarea></div><div class="field"><label>承｜展開</label><textarea data-path="design.structure.deepening" placeholder="問題・関係・世界がどう進み、広がるか"></textarea></div><div class="field"><label>転｜大きな変化・転機</label><textarea data-path="design.structure.crisis" placeholder="何が起こり、それまでと何が変わるか"></textarea></div><div class="field"><label>結｜着地</label><textarea data-path="design.structure.ending" placeholder="人物や世界がどこにたどり着くか"></textarea></div></div><details class="optional-block"><summary>その他の重要な節目があれば</summary><div class="optional-body"><div class="field"><label>その他の重要な節目</label><textarea data-path="design.structure.milestones" placeholder="出会い、事件、決断、視点変更、クライマックスなど。必要なものだけ自由に"></textarea></div></div></details></div></details>
+<details class="section-card" open><summary>キラーシーン <span class="pill">構造より場面から考えてOK</span></summary><div class="section-body"><div class="field"><label>この作品で絶対に描きたい場面</label><textarea data-path="proposal.mustScenes" placeholder="1行に1つ。絵・会話・事件・ラストの一瞬など、強く描きたい場面を自由に"></textarea></div><p class="small">物語の中盤に限りません。作品の魅力や記憶に残る瞬間を先に置き、あとから構造をつないでも構いません。</p></div></details>
+<details class="section-card"><summary>モチーフ / 反復 <span class="pill">任意</span></summary><div class="section-body"><div class="field"><label>繰り返す物・場所・行為</label><textarea data-path="design.motifs"></textarea></div><div class="field"><label>意味づけ（必要なら）</label><textarea data-path="design.motifMeaning"></textarea></div></div></details>
+<details class="section-card"><summary>自由設計 <span class="pill">作品固有</span></summary><div class="section-body"><div class="field"><label>この作品だけに必要な表・ルール・メモ</label><textarea data-path="design.customFramework" placeholder="例：年代表、勢力関係、二重解釈表、技術検証メモなど。形式は自由です。"></textarea></div></div></details>
+</section>
+<section id="scenes" class="section">
+<div class="card"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h2 style="margin:0 auto 0 0;font-size:18px">シーン</h2><button class="btn no-print" id="addSceneBtn">＋ シーン追加</button></div><p class="small">タイトルと「何が起こるか」だけでも成立します。必要なシーンだけ詳細を開いてください。</p><div id="sceneList" class="scene-list"></div></div>
+</section>
+</div></main></div>
+<div class="modal-backdrop" id="bridgeModal"><div class="modal"><h2>ChatGPT連携</h2><p class="small">現在の作品をコンテキストJSONとして書き出し、ChatGPTで更新JSONを作って戻せます。</p><div class="field"><label>対象範囲</label><select id="bridgeScope"><option value="proposal">企画書</option><option value="design" selected>企画書＋物語設計書</option><option value="scenes">シーン</option><option value="all">作品全体</option></select></div><div class="field"><label>追加要望</label><textarea id="bridgeRequest" placeholder="例：人物設定を踏まえて世界設定とシーンを整合させて"></textarea></div><div class="modal-actions"><button class="btn primary" id="downloadContextBtn">コンテキストJSONを書き出す</button><button class="btn" id="copyPromptBtn">指示文をコピー</button><button class="btn" id="importPatchBtn">更新JSONを読み込む</button></div><input type="file" id="patchFileInput" accept="application/json" hidden><div id="patchPreview" class="patch-preview" hidden></div><div class="modal-actions" id="patchApplyActions" hidden><button class="btn primary" id="applyPatchBtn">変更を反映</button><button class="btn" id="cancelPatchBtn">キャンセル</button></div><div class="modal-actions"><button class="btn" id="closeBridgeBtn">閉じる</button></div></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-const STORAGE_KEY = 'sf_story_planner_v1';
+const $=id=>document.getElementById(id);
+const projectTitle=$('projectTitle'),projectGenre=$('projectGenre'),projectLength=$('projectLength'),mobileProjectTitle=$('mobileProjectTitle'),mobileProjectMeta=$('mobileProjectMeta'),newProjectBtn=$('newProjectBtn'),duplicateBtn=$('duplicateBtn'),deleteProjectBtn=$('deleteProjectBtn'),addCharacterBtn=$('addCharacterBtn'),addSceneBtn=$('addSceneBtn'),backupAllBtn=$('backupAllBtn'),exportProjectBtn=$('exportProjectBtn'),exportMarkdownBtn=$('exportMarkdownBtn'),importBtn=$('importBtn'),fileInput=$('fileInput'),toast=$('toast'),backupReminder=$('backupReminder'),bridgeScope=$('bridgeScope'),bridgeRequest=$('bridgeRequest'),patchPreview=$('patchPreview'),patchApplyActions=$('patchApplyActions'),chatgptBridgeBtn=$('chatgptBridgeBtn'),bridgeModal=$('bridgeModal'),closeBridgeBtn=$('closeBridgeBtn'),downloadContextBtn=$('downloadContextBtn'),copyPromptBtn=$('copyPromptBtn'),importPatchBtn=$('importPatchBtn'),patchFileInput=$('patchFileInput'),cancelPatchBtn=$('cancelPatchBtn'),applyPatchBtn=$('applyPatchBtn'),mobileOverlay=$('mobileOverlay'),mobileMenuBtn=$('mobileMenuBtn'),emptyMenuBtn=$('emptyMenuBtn');
+const STORAGE_KEY='sf_story_planner_v2';const DB_NAME='sf_story_planner_db';const DB_VERSION=1;const STORE_NAME='kv';const STATE_KEY='state_v2';
+let state={projects:[],activeId:null,meta:{lastBackupAt:null}};let saveTimer=null,dbPromise=null,persistenceMode='indexeddb',pendingPatch=null;const openSceneIds=new Set();
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const blankCharacter=(name='')=>({id:uid(),name,role:'',desire:'',fear:'',misconception:'',change:'',traits:''});
+const blankScene=()=>({id:uid(),title:'',pov:'',place:'',goal:'',event:'',dialogue:'',direction:'',emotion:'',info:'',foreshadow:''});
+const blankProject=()=>({frameworkVersion:'v9-flex',id:uid(),title:'新しい作品',genre:'',length:'',proposal:{oneLine:'',protagonist:'',surfaceStory:'',trueStory:'',centralQuestion:'',sellingPoint:'',aftertaste:'',mustScenes:'',exclusions:''},design:{themeQuestions:'',valueConflict:'',ambiguity:'',characters:[blankCharacter('主人公')],world:{canDo:'',cannotDo:'',society:'',dailyLife:'',protagonistProblem:''},structure:{start:'',inciting:'',deepening:'',crisis:'',reframe:'',ending:'',milestones:''},motifs:'',motifMeaning:'',customFramework:''},scenes:[blankScene()]});
+function ensureProject(p){
+  p.proposal=p.proposal||{};
+  ['oneLine','protagonist','surfaceStory','trueStory','centralQuestion','sellingPoint','aftertaste','mustScenes','exclusions'].forEach(k=>p.proposal[k]??='');
+  p.design=p.design||{};
+  ['themeQuestions','valueConflict','ambiguity','motifs','motifMeaning','customFramework'].forEach(k=>p.design[k]??='');
+  p.design.characters=Array.isArray(p.design.characters)&&p.design.characters.length?p.design.characters:[blankCharacter('主人公')];
+  p.design.characters.forEach(c=>{c.id ||= uid();['name','role','desire','fear','misconception','change','traits'].forEach(k=>c[k]??='')});
+  p.design.world=p.design.world||{};
+  ['canDo','cannotDo','society','dailyLife','protagonistProblem'].forEach(k=>p.design.world[k]??='');
+  p.design.structure=p.design.structure||{};
+  ['start','inciting','deepening','crisis','reframe','ending','milestones'].forEach(k=>p.design.structure[k]??='');
 
-function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
-function blankCharacter(name=''){ return {id:uid(),name,role:'',desire:'',fear:'',misconception:'',change:''}; }
-function blankScene(){ return {id:uid(),pov:'',place:'',goal:'',event:'',emotion:'',info:'',foreshadow:''}; }
-function blankProject(title='新しい作品'){
-  return {
-    id:uid(), title, genre:'', length:'',
-    proposal:{oneLine:'',protagonist:'',surfaceStory:'',trueStory:'',centralQuestion:'',sellingPoint:'',aftertaste:'',mustScenes:'',exclusions:''},
-    design:{
-      themeQuestions:'',valueConflict:'',ambiguity:'',
-      characters:[blankCharacter()],
-      world:{canDo:'',cannotDo:'',society:'',dailyLife:'',protagonistProblem:''},
-      structure:{start:'',inciting:'',deepening:'',crisis:'',reframe:'',ending:''},
-      motifs:'',motifMeaning:'',customFramework:''
-    },
-    scenes:[blankScene()]
-  };
-}
-
-const seedProjects = [blankProject('新しい作品')];
-const DB_NAME = 'sf_story_planner_db';
-const DB_VERSION = 1;
-const STORE_NAME = 'kv';
-const STATE_KEY = 'state_v2';
-
-let state = {projects:[], activeId:null, meta:{lastBackupAt:null}};
-let saveTimer = null;
-let dbPromise = null;
-let persistenceMode = 'indexeddb';
-
-function openDB(){
-  if(dbPromise) return dbPromise;
-  dbPromise = new Promise((resolve,reject)=>{
-    try{
-      const req=indexedDB.open(DB_NAME,DB_VERSION);
-      req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME); };
-      req.onsuccess=()=>resolve(req.result);
-      req.onerror=()=>reject(req.error||new Error('IndexedDB error'));
-    }catch(err){ reject(err); }
-  });
-  return dbPromise;
-}
-async function idbGet(key){
-  const db=await openDB();
-  return new Promise((resolve,reject)=>{
-    const tx=db.transaction(STORE_NAME,'readonly');
-    const r=tx.objectStore(STORE_NAME).get(key);
-    r.onsuccess=()=>resolve(r.result);
-    r.onerror=()=>reject(r.error);
-  });
-}
-async function idbSet(key,value){
-  const db=await openDB();
-  return new Promise((resolve,reject)=>{
-    const tx=db.transaction(STORE_NAME,'readwrite');
-    tx.objectStore(STORE_NAME).put(value,key);
-    tx.oncomplete=()=>resolve();
-    tx.onerror=()=>reject(tx.error);
-  });
-}
-function localGet(){
-  try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch{return null}
-}
-function localSet(value){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(value));return true}catch{return false}
-}
-async function load(){
-  let saved=null;
-  try{
-    saved=await idbGet(STATE_KEY);
-    persistenceMode='indexeddb';
-  }catch(err){
-    persistenceMode='localstorage';
-  }
-  if(!saved){
-    const legacy=localGet();
-    if(legacy && Array.isArray(legacy.projects)) saved=legacy;
-  }
-  if(saved && Array.isArray(saved.projects) && saved.projects.length){
-    state=saved;
-    state.meta=state.meta||{lastBackupAt:null};
-    if(!state.activeId || !state.projects.some(p=>p.id===state.activeId)) state.activeId=state.projects[0].id;
-  }else{
-    state={projects:JSON.parse(JSON.stringify(seedProjects)), activeId:seedProjects[0].id, meta:{lastBackupAt:null}};
-  }
-  // Persist best effort, but never block app startup if storage is unavailable.
-  try{ if(persistenceMode==='indexeddb') await idbSet(STATE_KEY,state); else localSet(state); }catch{}
-}
-async function save(){
-  try{
-    if(persistenceMode==='indexeddb') await idbSet(STATE_KEY,state);
-    else localSet(state);
-  }catch{
-    persistenceMode='localstorage';
-    localSet(state);
-  }
-  const s=document.getElementById('saveStatus'); if(s) s.textContent='保存済み';
-  const ms=document.getElementById('mobileSaveStatus'); if(ms) ms.textContent='保存済み';
-  updateBackupReminder();
-}
-function scheduleSave(){
-  const s=document.getElementById('saveStatus'); if(s) s.textContent='保存中…';
-  const ms=document.getElementById('mobileSaveStatus'); if(ms) ms.textContent='保存中…';
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(()=>save(),350);
-}
-function active(){ return state.projects.find(p=>p.id===state.activeId); }
-
-function getPath(obj,path){
-  return path.split('.').reduce((o,k)=>o?.[k],obj);
-}
-function setPath(obj,path,value){
-  const parts=path.split('.');
-  let cur=obj;
-  parts.slice(0,-1).forEach(k=>{ if(cur[k]===undefined) cur[k]={}; cur=cur[k]; });
-  cur[parts.at(-1)] = value;
-}
-function escapeHtml(s=''){
-  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-
-function renderProjects(){
-  const list=document.getElementById('projectList');
-  list.innerHTML='';
-  state.projects.forEach(p=>{
-    const div=document.createElement('div');
-    div.className='project-item'+(p.id===state.activeId?' active':'');
-    div.innerHTML=`<div class="project-title">${escapeHtml(p.title||'無題')}</div>
-      <div class="project-meta">${escapeHtml(p.genre||'ジャンル未設定')} ・ ${p.scenes?.length||0} scenes</div>`;
-    div.onclick=()=>{ state.activeId=p.id; save(); renderAll(); };
-    list.appendChild(div);
-  });
-}
-function renderBase(){
-  const p=active();
-  document.getElementById('emptyState').hidden=!!p;
-  document.getElementById('editor').hidden=!p;
-  if(!p) return;
-  document.getElementById('projectTitle').value=p.title||'';
-  document.getElementById('projectGenre').value=p.genre||'';
-  document.getElementById('projectLength').value=p.length||'';
-  document.getElementById('mobileProjectTitle').textContent=p.title||'無題';
-  document.getElementById('mobileProjectMeta').textContent=[p.genre||'ジャンル未設定',p.length||'文字数未設定'].join(' ・ ');
-  document.querySelectorAll('[data-path]').forEach(el=>{
-    el.value=getPath(p,el.dataset.path)||'';
-  });
-}
-function renderCharacters(){
-  const p=active(); const root=document.getElementById('characterList'); root.innerHTML='';
-  if(!p) return;
-  p.design.characters.forEach((c,i)=>{
-    const d=document.createElement('div');
-    d.className='character-card';
-    d.innerHTML=`
-      <div class="grid2">
-        <div class="field"><label>人物名</label><input data-char="${c.id}" data-key="name" value="${escapeHtml(c.name)}"></div>
-        <div class="field"><label>役割</label><input data-char="${c.id}" data-key="role" value="${escapeHtml(c.role)}"></div>
-      </div>
-      <div class="grid2">
-        <div class="field"><label>欲望</label><textarea data-char="${c.id}" data-key="desire">${escapeHtml(c.desire)}</textarea></div>
-        <div class="field"><label>恐怖</label><textarea data-char="${c.id}" data-key="fear">${escapeHtml(c.fear)}</textarea></div>
-        <div class="field"><label>誤認</label><textarea data-char="${c.id}" data-key="misconception">${escapeHtml(c.misconception)}</textarea></div>
-        <div class="field"><label>変化</label><textarea data-char="${c.id}" data-key="change">${escapeHtml(c.change)}</textarea></div>
-      </div>
-      <div class="row-actions no-print"><button class="mini" data-remove-char="${c.id}">削除</button></div>`;
-    root.appendChild(d);
-  });
-  root.querySelectorAll('[data-char]').forEach(el=>{
-    el.addEventListener('input',e=>{
-      const c=p.design.characters.find(x=>x.id===e.target.dataset.char);
-      if(c){ c[e.target.dataset.key]=e.target.value; scheduleSave(); }
-    });
-  });
-  root.querySelectorAll('[data-remove-char]').forEach(btn=>btn.onclick=()=>{
-    if(p.design.characters.length===1) return alert('登場人物は1人以上残してください。');
-    p.design.characters=p.design.characters.filter(x=>x.id!==btn.dataset.removeChar);
-    scheduleSave(); renderCharacters();
-  });
-}
-function renderScenes(){
-  const p=active();
-  const body=document.getElementById('sceneBody');
-  const mobile=document.getElementById('mobileSceneList');
-  body.innerHTML=''; mobile.innerHTML='';
-  if(!p) return;
-
-  const labels={
-    pov:'視点', place:'場所', goal:'目的', event:'起こること',
-    emotion:'感情変化', info:'読者に与える情報', foreshadow:'伏線・回収'
-  };
-
-  p.scenes.forEach((s,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`
-      <td>${i+1}</td>
-      ${['pov','place','goal','event','emotion','info','foreshadow'].map(k=>`<td><textarea data-scene="${s.id}" data-key="${k}">${escapeHtml(s[k])}</textarea></td>`).join('')}
-      <td class="scene-actions no-print">
-        <button class="mini" data-up="${s.id}">↑</button>
-        <button class="mini" data-down="${s.id}">↓</button>
-        <button class="mini" data-copy="${s.id}">複製</button>
-        <button class="mini" data-del="${s.id}">削除</button>
-      </td>`;
-    body.appendChild(tr);
-
-    const card=document.createElement('div');
-    card.className='mobile-scene-card';
-    card.innerHTML=`
-      <div class="mobile-scene-head">
-        <span class="mobile-scene-number">Scene ${i+1}</span>
-        <span class="spacer"></span>
-        <button class="mini" data-up="${s.id}" aria-label="上へ">↑</button>
-        <button class="mini" data-down="${s.id}" aria-label="下へ">↓</button>
-        <button class="mini" data-copy="${s.id}" aria-label="複製">複製</button>
-      </div>
-      ${['pov','place','goal','event','emotion','info','foreshadow'].map(k=>`
-        <div class="field">
-          <label>${labels[k]}</label>
-          <textarea data-scene="${s.id}" data-key="${k}">${escapeHtml(s[k])}</textarea>
-        </div>`).join('')}
-      <div class="row-actions no-print">
-        <button class="mini" data-del="${s.id}">このシーンを削除</button>
-      </div>`;
-    mobile.appendChild(card);
-  });
-
-  document.querySelectorAll('[data-scene]').forEach(el=>el.addEventListener('input',e=>{
-    const s=p.scenes.find(x=>x.id===e.target.dataset.scene);
-    if(s){ s[e.target.dataset.key]=e.target.value; scheduleSave(); syncSceneInputs(e.target); }
-  }));
-  document.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>moveScene(b.dataset.up,-1));
-  document.querySelectorAll('[data-down]').forEach(b=>b.onclick=()=>moveScene(b.dataset.down,1));
-  document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyScene(b.dataset.copy));
-  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>deleteScene(b.dataset.del));
-}
-function syncSceneInputs(source){
-  const id=source.dataset.scene, key=source.dataset.key;
-  document.querySelectorAll(`[data-scene="${id}"][data-key="${key}"]`).forEach(el=>{
-    if(el!==source && el.value!==source.value) el.value=source.value;
-  });
-}
-function moveScene(id,delta){
-  const p=active(), i=p.scenes.findIndex(s=>s.id===id), j=i+delta;
-  if(i<0||j<0||j>=p.scenes.length) return;
-  [p.scenes[i],p.scenes[j]]=[p.scenes[j],p.scenes[i]];
-  scheduleSave(); renderScenes();
-}
-function copyScene(id){
-  const p=active(), i=p.scenes.findIndex(s=>s.id===id);
-  if(i<0)return;
-  p.scenes.splice(i+1,0,{...p.scenes[i],id:uid()});
-  scheduleSave(); renderScenes();
-}
-function deleteScene(id){
-  const p=active();
-  if(p.scenes.length===1) return alert('シーンは1つ以上残してください。');
-  p.scenes=p.scenes.filter(s=>s.id!==id);
-  scheduleSave(); renderScenes();
-}
-function renderAll(){ renderProjects(); renderBase(); renderCharacters(); renderScenes(); }
-
-function download(name,text,type='application/json'){
-  const blob=new Blob([text],{type});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob); a.download=name; a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),500);
-}
-function safeName(s){ return (s||'project').replace(/[\\/:*?"<>|]/g,'_'); }
-
-function projectMarkdown(p){
-  const chars=p.design.characters.map(c=>`### ${c.name||'無題'}\n- 役割: ${c.role}\n- 欲望: ${c.desire}\n- 恐怖: ${c.fear}\n- 誤認: ${c.misconception}\n- 変化: ${c.change}`).join('\n\n');
-  const scenes=p.scenes.map((s,i)=>`### Scene ${i+1}\n- 視点: ${s.pov}\n- 場所: ${s.place}\n- 目的: ${s.goal}\n- 起こること: ${s.event}\n- 感情変化: ${s.emotion}\n- 読者に与える情報: ${s.info}\n- 伏線・回収: ${s.foreshadow}`).join('\n\n');
-  return `# ${p.title}
-
-- ジャンル: ${p.genre}
-- 想定文字数: ${p.length}
-
-## 企画書
-
-### 一行企画
-${p.proposal.oneLine}
-
-### 主人公
-${p.proposal.protagonist}
-
-### 表面的な物語
-${p.proposal.surfaceStory}
-
-### 本当の物語
-${p.proposal.trueStory}
-
-### 中心となる問い
-${p.proposal.centralQuestion}
-
-### 最大の売り
-${p.proposal.sellingPoint}
-
-### 読後感
-${p.proposal.aftertaste}
-
-### 絶対に入れる場面
-${p.proposal.mustScenes}
-
-### この作品では扱わないこと
-${p.proposal.exclusions}
-
-## 物語設計書
-
-### テーマ
-${p.design.themeQuestions}
-
-### 対立する価値観
-${p.design.valueConflict}
-
-### 余白
-${p.design.ambiguity}
-
-## 人物
-${chars}
-
-## 世界設定
-- できること: ${p.design.world.canDo}
-- できないこと: ${p.design.world.cannotDo}
-- 社会: ${p.design.world.society}
-- 日常: ${p.design.world.dailyLife}
-- 主人公の問題: ${p.design.world.protagonistProblem}
-
-## 構造
-- 開始: ${p.design.structure.start}
-- 異変: ${p.design.structure.inciting}
-- 深化: ${p.design.structure.deepening}
-- 決定的事件: ${p.design.structure.crisis}
-- 再解釈: ${p.design.structure.reframe}
-- 結末: ${p.design.structure.ending}
-
-## モチーフ
-${p.design.motifs}
-
-### 意味
-${p.design.motifMeaning}
-
-## 作品固有設計
-${p.design.customFramework}
-
-## シーン表
-${scenes}
-`;
-}
-
-document.addEventListener('input',e=>{
-  const p=active(); if(!p) return;
-  if(e.target.id==='projectTitle'){p.title=e.target.value; document.getElementById('mobileProjectTitle').textContent=p.title||'無題'; renderProjects(); scheduleSave();}
-  else if(e.target.id==='projectGenre'){p.genre=e.target.value; document.getElementById('mobileProjectMeta').textContent=[p.genre||'ジャンル未設定',p.length||'文字数未設定'].join(' ・ '); renderProjects(); scheduleSave();}
-  else if(e.target.id==='projectLength'){p.length=e.target.value; document.getElementById('mobileProjectMeta').textContent=[p.genre||'ジャンル未設定',p.length||'文字数未設定'].join(' ・ '); scheduleSave();}
-  else if(e.target.dataset.path){setPath(p,e.target.dataset.path,e.target.value); scheduleSave();}
-});
-
-function activateTab(tabName){
-  document.querySelectorAll('.tab,.mobile-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tabName));
-  document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===tabName));
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-document.querySelectorAll('.tab,.mobile-tab').forEach(btn=>btn.onclick=()=>activateTab(btn.dataset.tab));
-
-document.getElementById('newProjectBtn').onclick=()=>{
-  const p=blankProject();
-  state.projects.unshift(p); state.activeId=p.id; save(); renderAll();
-};
-document.getElementById('duplicateBtn').onclick=()=>{
-  const p=active(); if(!p)return;
-  const copy=JSON.parse(JSON.stringify(p)); copy.id=uid(); copy.title=(p.title||'無題')+'（複製）';
-  copy.design.characters.forEach(c=>c.id=uid()); copy.scenes.forEach(s=>s.id=uid());
-  state.projects.unshift(copy); state.activeId=copy.id; save(); renderAll();
-};
-document.getElementById('deleteProjectBtn').onclick=()=>{
-  const p=active(); if(!p)return;
-  if(!confirm(`「${p.title}」を削除しますか？`))return;
-  state.projects=state.projects.filter(x=>x.id!==p.id);
-  state.activeId=state.projects[0]?.id||null; save(); renderAll();
-};
-document.getElementById('addCharacterBtn').onclick=()=>{
-  active().design.characters.push(blankCharacter()); scheduleSave(); renderCharacters();
-};
-document.getElementById('addSceneBtn').onclick=()=>{
-  active().scenes.push(blankScene()); scheduleSave(); renderScenes();
-};
-document.getElementById('backupAllBtn').onclick=async()=>{
-  state.meta=state.meta||{};
-  state.meta.lastBackupAt=new Date().toISOString();
-  await save();
-  download(`sf_story_planner_backup_${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(state,null,2));
-  showToast('全作品バックアップを作成しました');
-};
-document.getElementById('exportProjectBtn').onclick=()=>{
-  const p=active(); download(`${safeName(p.title)}.json`,JSON.stringify(p,null,2));
-};
-document.getElementById('exportMarkdownBtn').onclick=()=>{
-  const p=active(); download(`${safeName(p.title)}.md`,projectMarkdown(p),'text/markdown');
-};
-document.getElementById('importBtn').onclick=()=>document.getElementById('fileInput').click();
-document.getElementById('fileInput').addEventListener('change',async e=>{
-  const f=e.target.files[0]; if(!f)return;
-  try{
-    const data=JSON.parse(await f.text());
-    if(Array.isArray(data.projects)){
-      if(!confirm('現在の全作品を、読み込んだバックアップで置き換えますか？')) return;
-      state=data;
-    }else if(data && data.id && data.proposal && data.design){
-      const p=JSON.parse(JSON.stringify(data)); p.id=uid();
-      p.design.characters.forEach(c=>c.id=uid()); p.scenes.forEach(s=>s.id=uid());
-      state.projects.unshift(p); state.activeId=p.id;
-    }else throw new Error('形式不正');
-    save(); renderAll();
-  }catch(err){ alert('読み込みに失敗しました。SF Story Plannerから書き出したJSONを選んでください。'); }
-  e.target.value='';
-});
-
-
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),1800);
-}
-function updateBackupReminder(){
-  const el=document.getElementById('backupReminder');
-  if(!el) return;
-  const ts=state.meta?.lastBackupAt ? new Date(state.meta.lastBackupAt).getTime() : 0;
-  const days=ts ? (Date.now()-ts)/(1000*60*60*24) : 999;
-  el.classList.toggle('show',days>=7);
-}
-function bridgePrompt(){
-  const p=active();
-  const scope=document.getElementById('bridgeScope').value;
-  const req=document.getElementById('bridgeRequest').value.trim();
-  const scopeLabel={proposal:'企画書',design:'企画書と物語設計書',scenes:'シーン表',all:'作品全体'}[scope];
-  return `添付した Story Planner のコンテキストJSONを読み、作品「${p?.title||''}」の${scopeLabel}をブラッシュアップしてください。
-${req ? `追加要望：${req}\n` : ''}
-最終的に、Story Plannerへそのまま読み込める更新ファイルを1つ作成してください。
-ファイル名は story_planner_patch.json とし、format は "sf-story-planner-patch-v1"、operations 配列で変更を表現してください。
-本文で変更案を説明しても構いませんが、アプリへ反映する変更は必ず更新JSONにも含めてください。
-既存内容を無断で全削除せず、設定の意図を尊重してください。`;
-}
-function exportContext(){
-  const p=active(); if(!p) return;
-  const payload={
-    format:'sf-story-planner-context-v1',
-    exportedAt:new Date().toISOString(),
-    requestedScope:document.getElementById('bridgeScope').value,
-    request:document.getElementById('bridgeRequest').value.trim(),
-    patchFormat:{
-      format:'sf-story-planner-patch-v1',
-      target:{projectId:p.id,title:p.title},
-      operations:[
-        {op:'set',path:'proposal.oneLine',value:'...'},
-        {op:'append_scene',scene:{pov:'',place:'',goal:'',event:'',emotion:'',info:'',foreshadow:''}},
-        {op:'upsert_character',name:'人物名',value:{role:'',desire:'',fear:'',misconception:'',change:''}}
-      ],
-      supportedOperations:[
-        'set: known scalar/text path',
-        'append_scene: add one scene',
-        'replace_scenes: replace all scenes using scenes array',
-        'upsert_character: add/update character by name'
-      ]
-    },
-    project:JSON.parse(JSON.stringify(p))
-  };
-  download(`${safeName(p.title)}_chatgpt_context.json`,JSON.stringify(payload,null,2));
-  showToast('ChatGPT用ファイルを作成しました');
-}
-async function copyBridgePrompt(){
-  const txt=bridgePrompt();
-  try{ await navigator.clipboard.writeText(txt); showToast('指示文をコピーしました'); }
-  catch{
-    const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); ta.remove(); showToast('指示文をコピーしました');
-  }
-}
-function isAllowedSetPath(path){
-  const allowed=[
-    'title','genre','length',
-    'proposal.oneLine','proposal.protagonist','proposal.surfaceStory','proposal.trueStory',
-    'proposal.centralQuestion','proposal.sellingPoint','proposal.aftertaste','proposal.mustScenes','proposal.exclusions',
-    'design.themeQuestions','design.valueConflict','design.ambiguity',
-    'design.world.canDo','design.world.cannotDo','design.world.society','design.world.dailyLife','design.world.protagonistProblem',
-    'design.structure.start','design.structure.inciting','design.structure.deepening','design.structure.crisis','design.structure.reframe','design.structure.ending',
-    'design.motifs','design.motifMeaning','design.customFramework'
-  ];
-  return allowed.includes(path);
-}
-function validatePatch(data){
-  if(!data || data.format!=='sf-story-planner-patch-v1' || !Array.isArray(data.operations)) throw new Error('更新JSONの形式が違います。');
-  const p=active();
-  if(data.target?.projectId && data.target.projectId!==p.id && data.target?.title!==p.title){
-    throw new Error(`対象作品が一致しません。JSON: ${data.target?.title||'不明'} / 現在: ${p.title}`);
-  }
-  for(const op of data.operations){
-    if(!['set','append_scene','replace_scenes','upsert_character'].includes(op.op)) throw new Error(`未対応の操作: ${op.op}`);
-    if(op.op==='set' && (!isAllowedSetPath(op.path) || typeof op.value!=='string')) throw new Error(`set操作が不正です: ${op.path}`);
-    if(op.op==='append_scene' && (!op.scene || typeof op.scene!=='object')) throw new Error('append_scene が不正です');
-    if(op.op==='replace_scenes' && !Array.isArray(op.scenes)) throw new Error('replace_scenes が不正です');
-    if(op.op==='upsert_character' && (!op.name || !op.value || typeof op.value!=='object')) throw new Error('upsert_character が不正です');
-  }
-  return true;
-}
-function operationSummary(op,i){
-  if(op.op==='set') return `${i+1}. ${op.path} を更新`;
-  if(op.op==='append_scene') return `${i+1}. シーン追加：${op.scene?.event||op.scene?.goal||'新規シーン'}`;
-  if(op.op==='replace_scenes') return `${i+1}. シーン表を ${op.scenes.length} 件で置換`;
-  if(op.op==='upsert_character') return `${i+1}. 登場人物「${op.name}」を追加/更新`;
-  return `${i+1}. ${op.op}`;
-}
-let pendingPatch=null;
-function previewPatch(data){
-  validatePatch(data);
-  pendingPatch=data;
-  const box=document.getElementById('patchPreview');
-  box.hidden=false;
-  box.textContent=`対象: ${data.target?.title||active().title}\n変更数: ${data.operations.length}\n\n`+
-    data.operations.map(operationSummary).join('\n');
-  document.getElementById('patchApplyActions').hidden=false;
-}
-function normalizedScene(s){
-  return {id:uid(),pov:s.pov||'',place:s.place||'',goal:s.goal||'',event:s.event||'',emotion:s.emotion||'',info:s.info||'',foreshadow:s.foreshadow||''};
-}
-async function applyPendingPatch(){
-  if(!pendingPatch) return;
-  const p=active();
-  for(const op of pendingPatch.operations){
-    if(op.op==='set') setPath(p,op.path,op.value);
-    if(op.op==='append_scene') p.scenes.push(normalizedScene(op.scene));
-    if(op.op==='replace_scenes') p.scenes=op.scenes.map(normalizedScene);
-    if(op.op==='upsert_character'){
-      let c=p.design.characters.find(x=>(x.name||'').trim()===(op.name||'').trim());
-      if(!c){ c=blankCharacter(op.name); p.design.characters.push(c); }
-      ['role','desire','fear','misconception','change'].forEach(k=>{ if(typeof op.value[k]==='string') c[k]=op.value[k]; });
-      c.name=op.name;
+  // v8以前の重複項目を、v9の統合先へ一度だけ移す。
+  if(p.frameworkVersion!=='v9-flex'){
+    const oldQuestions=(p.design.themeQuestions||'').trim();
+    if(oldQuestions){
+      const current=(p.proposal.centralQuestion||'').trim();
+      if(!current) p.proposal.centralQuestion=oldQuestions;
+      else if(!current.includes(oldQuestions)) p.proposal.centralQuestion=current+'\n\n関連する問い：\n'+oldQuestions;
+      p.design.themeQuestions='';
     }
+    const oldDaily=(p.design.world.dailyLife||'').trim();
+    if(oldDaily){
+      const current=(p.design.world.society||'').trim();
+      if(!current) p.design.world.society=oldDaily;
+      else if(!current.includes(oldDaily)) p.design.world.society=current+'\n\n日常・暮らしへの影響：\n'+oldDaily;
+      p.design.world.dailyLife='';
+    }
+    const legacy=[];
+    if((p.design.structure.inciting||'').trim()) legacy.push('・'+p.design.structure.inciting.trim());
+    if((p.design.structure.reframe||'').trim()) legacy.push('・'+p.design.structure.reframe.trim());
+    if(legacy.length){
+      const old=legacy.join('\n'), current=(p.design.structure.milestones||'').trim();
+      if(!current) p.design.structure.milestones=old;
+      else if(!current.includes(old)) p.design.structure.milestones=current+'\n'+old;
+      p.design.structure.inciting=''; p.design.structure.reframe='';
+    }
+    p.frameworkVersion='v9-flex';
   }
-  pendingPatch=null;
-  document.getElementById('patchPreview').hidden=true;
-  document.getElementById('patchApplyActions').hidden=true;
-  await save(); renderAll(); showToast('ChatGPTの変更を反映しました');
+  p.scenes=Array.isArray(p.scenes)&&p.scenes.length?p.scenes:[blankScene()];
+  p.scenes.forEach(s=>{s.id ||= uid();['title','pov','place','goal','event','dialogue','direction','emotion','info','foreshadow'].forEach(k=>s[k]??='')});
+  return p
 }
-function showPatchSpec(){
-  const spec=`{
-  "format": "sf-story-planner-patch-v1",
-  "target": {"projectId": "context内のID", "title": "作品名"},
-  "operations": [
-    {"op":"set","path":"proposal.oneLine","value":"新しい文章"},
-    {"op":"upsert_character","name":"夫","value":{"role":"...","desire":"...","fear":"...","misconception":"...","change":"..."}},
-    {"op":"append_scene","scene":{"pov":"夫","place":"自宅","goal":"...","event":"...","emotion":"...","info":"...","foreshadow":"..."}}
-  ]
-}
-
-対応操作:
-・set … 企画書/設計書の1項目を更新
-・upsert_character … 人物名で追加/更新
-・append_scene … シーンを追加
-・replace_scenes … シーン表全体を置換`;
-  const box=document.getElementById('patchPreview'); box.hidden=false; box.textContent=spec;
-}
-document.getElementById('chatgptBridgeBtn').onclick=()=>document.getElementById('bridgeModal').classList.add('show');
-document.getElementById('closeBridgeBtn').onclick=()=>document.getElementById('bridgeModal').classList.remove('show');
-document.getElementById('bridgeModal').addEventListener('click',e=>{ if(e.target.id==='bridgeModal') e.currentTarget.classList.remove('show'); });
-document.getElementById('downloadContextBtn').onclick=exportContext;
-document.getElementById('copyPromptBtn').onclick=copyBridgePrompt;
-document.getElementById('importPatchBtn').onclick=()=>document.getElementById('patchFileInput').click();
-document.getElementById('showPatchSpecBtn').onclick=showPatchSpec;
-document.getElementById('cancelPatchBtn').onclick=()=>{
-  pendingPatch=null; document.getElementById('patchPreview').hidden=true; document.getElementById('patchApplyActions').hidden=true;
-};
-document.getElementById('applyPatchBtn').onclick=applyPendingPatch;
-document.getElementById('patchFileInput').addEventListener('change',async e=>{
-  const f=e.target.files[0]; if(!f)return;
-  try{ previewPatch(JSON.parse(await f.text())); }
-  catch(err){ alert('更新JSONを読み込めませんでした。\\n'+err.message); }
-  e.target.value='';
-});
-
-const sidebar=document.querySelector('.sidebar');
-const mobileOverlay=document.getElementById('mobileOverlay');
-function openMobileMenu(){
-  sidebar.classList.add('open');
-  mobileOverlay.classList.add('show');
-}
-function closeMobileMenu(){
-  sidebar.classList.remove('open');
-  mobileOverlay.classList.remove('show');
-}
-document.getElementById('mobileMenuBtn').onclick=openMobileMenu;
-const emptyMenuBtn=document.getElementById('emptyMenuBtn'); if(emptyMenuBtn) emptyMenuBtn.onclick=openMobileMenu;
-mobileOverlay.onclick=closeMobileMenu;
-document.addEventListener('click',e=>{
-  if(window.innerWidth<=900 && e.target.closest('.project-item')){
-    setTimeout(closeMobileMenu,50);
-  }
-});
-window.addEventListener('resize',()=>{ if(window.innerWidth>900) closeMobileMenu(); });
-
-(async()=>{
-  await load();
-  renderAll();
-  updateBackupReminder();
-  if('serviceWorker' in navigator){
-    window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-  }
-})();
+function openDB(){if(dbPromise)return dbPromise;dbPromise=new Promise((resolve,reject)=>{try{const req=indexedDB.open(DB_NAME,DB_VERSION);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(STORE_NAME))db.createObjectStore(STORE_NAME)};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)}catch(e){reject(e)}});return dbPromise}
+async function idbGet(k){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,'readonly');const r=tx.objectStore(STORE_NAME).get(k);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function idbSet(k,v){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).put(v,k);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)})}
+function localGet(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch{return null}}function localSet(v){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(v));return true}catch{return false}}
+async function load(){let saved=null;try{saved=await idbGet(STATE_KEY)}catch{persistenceMode='localstorage'}if(!saved)saved=localGet();if(saved&&Array.isArray(saved.projects)&&saved.projects.length){state=saved;state.projects.forEach(ensureProject);state.meta=state.meta||{lastBackupAt:null};if(!state.activeId||!state.projects.some(p=>p.id===state.activeId))state.activeId=state.projects[0].id}else{const p=blankProject();state={projects:[p],activeId:p.id,meta:{lastBackupAt:null}}}try{persistenceMode==='indexeddb'?await idbSet(STATE_KEY,state):localSet(state)}catch{localSet(state)}}
+async function save(){try{persistenceMode==='indexeddb'?await idbSet(STATE_KEY,state):localSet(state)}catch{persistenceMode='localstorage';localSet(state)}setSaveText('保存済み');updateBackupReminder()}
+function setSaveText(t){document.getElementById('saveStatus').textContent=t;document.getElementById('mobileSaveStatus').textContent=t}function scheduleSave(){setSaveText('保存中…');clearTimeout(saveTimer);saveTimer=setTimeout(save,300)}
+const active=()=>state.projects.find(p=>p.id===state.activeId);const escapeHtml=(s='')=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function getPath(o,p){return p.split('.').reduce((a,k)=>a?.[k],o)}function setPath(o,p,v){const a=p.split('.');let c=o;a.slice(0,-1).forEach(k=>{c[k]??={};c=c[k]});c[a.at(-1)]=v}
+const countChars=v=>Array.from(v||'').length;function ensureCount(el){const f=el.closest('.field');if(!f||el.type==='file')return;let c=f.querySelector(':scope > .char-count');if(!c){c=document.createElement('div');c.className='char-count';f.appendChild(c)}c.textContent=countChars(el.value)+'字'}function refreshCounts(root=document){root.querySelectorAll('.field input[type=text],.field textarea').forEach(ensureCount)}
+function renderProjects(){const list=document.getElementById('projectList');list.innerHTML='';state.projects.forEach(p=>{const d=document.createElement('div');d.className='project-item'+(p.id===state.activeId?' active':'');d.innerHTML=`<div class="project-title">${escapeHtml(p.title||'無題')}</div><div class="project-meta">${escapeHtml(p.genre||'ジャンル未設定')} ・ ${p.scenes.length} scenes</div>`;d.onclick=()=>{state.activeId=p.id;save();renderAll();closeMobileMenu()};list.appendChild(d)})}
+function renderBase(){const p=active();document.getElementById('emptyState').hidden=!!p;document.getElementById('editor').hidden=!p;if(!p)return;projectTitle.value=p.title||'';projectGenre.value=p.genre||'';projectLength.value=p.length||'';mobileProjectTitle.textContent=p.title||'無題';mobileProjectMeta.textContent=[p.genre||'ジャンル未設定',p.length||'文字数未設定'].join(' ・ ');document.querySelectorAll('[data-path]').forEach(el=>el.value=getPath(p,el.dataset.path)||'');refreshCounts(document)}
+function renderCharacters(){const p=active(),root=document.getElementById('characterList');root.innerHTML='';p.design.characters.forEach(c=>{const d=document.createElement('details');d.className='character-card';d.innerHTML=`<summary><span class="character-title" data-char-summary="${c.id}">${escapeHtml(c.name||'無名の人物')}</span><span class="small">${escapeHtml(c.role||'')}</span></summary><div class="character-body"><div class="grid2"><div class="field"><label>人物名</label><input type="text" data-char="${c.id}" data-key="name" value="${escapeHtml(c.name)}"></div><div class="field"><label>役割 / 立場</label><input type="text" data-char="${c.id}" data-key="role" value="${escapeHtml(c.role)}"></div></div><div class="grid2"><div class="field"><label>この人物が望むこと</label><textarea data-char="${c.id}" data-key="desire">${escapeHtml(c.desire)}</textarea></div><div class="field"><label>恐れていること</label><textarea data-char="${c.id}" data-key="fear">${escapeHtml(c.fear)}</textarea></div><div class="field"><label>自己認識 / 思い込み</label><textarea data-char="${c.id}" data-key="misconception" placeholder="自分をどう捉えているか。正しい認識でも、思い込みでもOK">${escapeHtml(c.misconception)}</textarea></div><div class="field"><label>物語を通じた変化</label><textarea data-char="${c.id}" data-key="change">${escapeHtml(c.change)}</textarea></div></div><details class="optional-block"><summary>外見・癖・話し方など</summary><div class="optional-body"><div class="field"><label>外から見える特徴</label><textarea data-char="${c.id}" data-key="traits" placeholder="容姿、服装、仕草、口癖、話し方、身体的特徴など。物語で使うものだけ">${escapeHtml(c.traits)}</textarea></div></div></details><div class="row-actions no-print"><button class="mini danger" data-remove-char="${c.id}">削除</button></div></div>`;root.appendChild(d)});root.querySelectorAll('[data-char]').forEach(el=>el.addEventListener('input',e=>{const c=p.design.characters.find(x=>x.id===e.target.dataset.char);if(!c)return;c[e.target.dataset.key]=e.target.value;if(e.target.dataset.key==='name')root.querySelector(`[data-char-summary="${c.id}"]`).textContent=c.name||'無名の人物';scheduleSave()}));root.querySelectorAll('[data-remove-char]').forEach(b=>b.onclick=()=>{if(p.design.characters.length===1)return alert('登場人物は1人以上残してください。');p.design.characters=p.design.characters.filter(x=>x.id!==b.dataset.removeChar);scheduleSave();renderCharacters()});refreshCounts(root)}
+function sceneMeta(s){return [s.pov&&`視点: ${s.pov}`,s.place&&`場所: ${s.place}`].filter(Boolean).join(' ・ ')||'詳細を開いて編集'}
+function renderScenes(){const p=active(),root=document.getElementById('sceneList');root.innerHTML='';p.scenes.forEach((s,i)=>{const d=document.createElement('details');d.className='scene-card';d.dataset.sceneCard=s.id;if(openSceneIds.has(s.id))d.open=true;d.innerHTML=`<summary><span class="scene-no">Scene ${i+1}</span><div class="scene-summary-main"><div class="scene-summary-title" data-scene-title-summary="${s.id}">${escapeHtml(s.title||'無題のシーン')}</div><div class="scene-summary-meta" data-scene-meta="${s.id}">${escapeHtml(sceneMeta(s))}</div></div></summary><div class="scene-body"><div class="field"><label>シーンタイトル</label><input type="text" data-scene="${s.id}" data-key="title" value="${escapeHtml(s.title)}" placeholder="例：誕生日の朝"></div><div class="grid2"><div class="field"><label>視点</label><input type="text" data-scene="${s.id}" data-key="pov" value="${escapeHtml(s.pov)}"></div><div class="field"><label>場所</label><input type="text" data-scene="${s.id}" data-key="place" value="${escapeHtml(s.place)}"></div></div><div class="field"><label>このシーンで起こること</label><textarea data-scene="${s.id}" data-key="event">${escapeHtml(s.event)}</textarea></div><div class="field"><label>このシーンの目的 / 変化</label><textarea data-scene="${s.id}" data-key="goal">${escapeHtml(s.goal)}</textarea></div><details class="optional-block"><summary>セリフ・演出メモ</summary><div class="optional-body"><div class="field"><label>セリフ / 言わせたい言葉</label><textarea data-scene="${s.id}" data-key="dialogue" placeholder="決め台詞、会話の核、断片的な言葉でもOK">${escapeHtml(s.dialogue)}</textarea></div><div class="field"><label>演出 / 描写・見せ方</label><textarea data-scene="${s.id}" data-key="direction" placeholder="視覚・音・間・動作・見せる順序など">${escapeHtml(s.direction)}</textarea></div></div></details><details class="optional-block"><summary>感情・情報・伏線まで設計する</summary><div class="optional-body"><div class="field"><label>感情の変化</label><textarea data-scene="${s.id}" data-key="emotion">${escapeHtml(s.emotion)}</textarea></div><div class="field"><label>読者に渡す情報</label><textarea data-scene="${s.id}" data-key="info">${escapeHtml(s.info)}</textarea></div><div class="field"><label>伏線 / 回収</label><textarea data-scene="${s.id}" data-key="foreshadow">${escapeHtml(s.foreshadow)}</textarea></div></div></details><div class="scene-actions no-print"><button class="mini" data-up="${s.id}">↑ 上へ</button><button class="mini" data-down="${s.id}">↓ 下へ</button><button class="mini" data-copy="${s.id}">複製</button><button class="mini danger" data-del="${s.id}">削除</button></div></div>`;d.addEventListener('toggle',()=>{d.open?openSceneIds.add(s.id):openSceneIds.delete(s.id)});root.appendChild(d)});root.querySelectorAll('[data-scene]').forEach(el=>el.addEventListener('input',e=>{const s=p.scenes.find(x=>x.id===e.target.dataset.scene);if(!s)return;s[e.target.dataset.key]=e.target.value;if(e.target.dataset.key==='title')root.querySelector(`[data-scene-title-summary="${s.id}"]`).textContent=s.title||'無題のシーン';if(['pov','place'].includes(e.target.dataset.key))root.querySelector(`[data-scene-meta="${s.id}"]`).textContent=sceneMeta(s);scheduleSave()}));root.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>moveScene(b.dataset.up,-1));root.querySelectorAll('[data-down]').forEach(b=>b.onclick=()=>moveScene(b.dataset.down,1));root.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyScene(b.dataset.copy));root.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>deleteScene(b.dataset.del));refreshCounts(root)}
+function moveScene(id,d){const p=active(),i=p.scenes.findIndex(s=>s.id===id),j=i+d;if(i<0||j<0||j>=p.scenes.length)return;[p.scenes[i],p.scenes[j]]=[p.scenes[j],p.scenes[i]];scheduleSave();renderScenes()}function copyScene(id){const p=active(),i=p.scenes.findIndex(s=>s.id===id);if(i<0)return;const c={...p.scenes[i],id:uid(),title:(p.scenes[i].title||'無題')+'（複製）'};p.scenes.splice(i+1,0,c);openSceneIds.add(c.id);scheduleSave();renderScenes()}function deleteScene(id){const p=active();if(p.scenes.length===1)return alert('シーンは1つ以上残してください。');p.scenes=p.scenes.filter(s=>s.id!==id);openSceneIds.delete(id);scheduleSave();renderScenes()}
+function renderAll(){renderProjects();renderBase();renderCharacters();renderScenes()}
+document.addEventListener('input',e=>{if(e.target.matches('input[type=text],textarea'))ensureCount(e.target);const p=active();if(!p)return;if(e.target.id==='projectTitle'){p.title=e.target.value;mobileProjectTitle.textContent=p.title||'無題';renderProjects();scheduleSave()}else if(e.target.id==='projectGenre'){p.genre=e.target.value;mobileProjectMeta.textContent=[p.genre||'ジャンル未設定',p.length||'文字数未設定'].join(' ・ ');renderProjects();scheduleSave()}else if(e.target.id==='projectLength'){p.length=e.target.value;mobileProjectMeta.textContent=[p.genre||'ジャンル未設定',p.length||'文字数未設定'].join(' ・ ');scheduleSave()}else if(e.target.dataset.path){setPath(p,e.target.dataset.path,e.target.value);scheduleSave()}})
+function activateTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===t));window.scrollTo({top:0,behavior:'smooth'})}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
+newProjectBtn.onclick=()=>{const p=blankProject();state.projects.unshift(p);state.activeId=p.id;save();renderAll()};duplicateBtn.onclick=()=>{const p=active(),c=JSON.parse(JSON.stringify(p));c.id=uid();c.title=(p.title||'無題')+'（複製）';c.design.characters.forEach(x=>x.id=uid());c.scenes.forEach(x=>x.id=uid());state.projects.unshift(c);state.activeId=c.id;save();renderAll()};deleteProjectBtn.onclick=()=>{const p=active();if(!confirm(`「${p.title}」を削除しますか？`))return;state.projects=state.projects.filter(x=>x.id!==p.id);state.activeId=state.projects[0]?.id||null;save();renderAll()};addCharacterBtn.onclick=()=>{const c=blankCharacter();active().design.characters.push(c);scheduleSave();renderCharacters()};addSceneBtn.onclick=()=>{const s=blankScene();active().scenes.push(s);openSceneIds.add(s.id);scheduleSave();renderScenes();setTimeout(()=>document.querySelector(`[data-scene-card="${s.id}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),50)};
+function download(name,text,type='application/json'){const blob=new Blob([text],{type}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}const safeName=s=>(s||'project').replace(/[\\/:*?"<>|]/g,'_');backupAllBtn.onclick=async()=>{state.meta.lastBackupAt=new Date().toISOString();await save();download(`sf_story_planner_backup_${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(state,null,2));showToast('全作品バックアップを作成しました')};exportProjectBtn.onclick=()=>download(`${safeName(active().title)}.json`,JSON.stringify(active(),null,2));
+function projectMarkdown(p){const chars=p.design.characters.map(c=>`### ${c.name||'無名'}\n- 役割: ${c.role}\n- 望み: ${c.desire}\n- 変化: ${c.change}\n- 恐怖: ${c.fear}\n- 自己認識 / 思い込み: ${c.misconception}\n- 外見・癖・話し方: ${c.traits}`).join('\n\n');const scenes=p.scenes.map((s,i)=>`### Scene ${i+1}: ${s.title||'無題'}\n- 視点: ${s.pov}\n- 場所: ${s.place}\n- 起こること: ${s.event}\n- 目的/変化: ${s.goal}\n- セリフ: ${s.dialogue}\n- 演出: ${s.direction}\n- 感情変化: ${s.emotion}\n- 情報: ${s.info}\n- 伏線/回収: ${s.foreshadow}`).join('\n\n');return `# ${p.title}\n\n- ジャンル: ${p.genre}\n- 想定文字数: ${p.length}\n\n## 企画の核\n\n### 一行企画\n${p.proposal.oneLine}\n\n### 物語の流れ\n${p.proposal.surfaceStory}\n\n### 中心人物の一言像\n${p.proposal.protagonist}\n\n### テーマ / 問い\n${p.proposal.centralQuestion}\n\n### 読後に残したいもの / 余韻\n${p.proposal.aftertaste}\n\n## 補助項目\n- 魅力 / 売り: ${p.proposal.sellingPoint}\n- 執筆方針・留意点: ${p.proposal.exclusions}\n\n## キラーシーン\n${p.proposal.mustScenes}\n\n## 人物\n${chars}\n\n## 世界 / SF設定\n- 核となる前提: ${p.design.world.canDo}\n- ルール・限界: ${p.design.world.cannotDo}\n- 社会への影響: ${p.design.world.society}\n- 人物への問題: ${p.design.world.protagonistProblem}\n\n## 物語の骨格\n- 起｜導入: ${p.design.structure.start}\n- 承｜展開: ${p.design.structure.deepening}\n- 転｜大きな変化・転機: ${p.design.structure.crisis}\n- 結｜着地: ${p.design.structure.ending}\n- その他の重要な節目: ${p.design.structure.milestones}\n\n## 自由設計\n${p.design.customFramework}\n\n## シーン\n${scenes}\n`};exportMarkdownBtn.onclick=()=>download(`${safeName(active().title)}.md`,projectMarkdown(active()),'text/markdown');
+importBtn.onclick=()=>fileInput.click();fileInput.addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(Array.isArray(data.projects)){if(!confirm('現在の全作品を、読み込んだバックアップで置き換えますか？'))return;state=data;state.projects.forEach(ensureProject);state.meta=state.meta||{lastBackupAt:null}}else if(data&&data.id&&data.proposal&&data.design){const p=ensureProject(JSON.parse(JSON.stringify(data)));p.id=uid();p.design.characters.forEach(c=>c.id=uid());p.scenes.forEach(s=>s.id=uid());state.projects.unshift(p);state.activeId=p.id}else throw new Error('形式不正');await save();renderAll()}catch(err){alert('読み込みに失敗しました。Story Plannerから書き出したJSONを選んでください。')}e.target.value=''})
+function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}function updateBackupReminder(){const ts=state.meta?.lastBackupAt?new Date(state.meta.lastBackupAt).getTime():0;const days=ts?(Date.now()-ts)/86400000:999;backupReminder.classList.toggle('show',days>=7)}
+function bridgePrompt(){const p=active(),scope=bridgeScope.value,req=bridgeRequest.value.trim(),label={proposal:'企画書',design:'企画書と物語設計書',scenes:'シーン',all:'作品全体'}[scope];return `添付した Story Planner のコンテキストJSONを読み、作品「${p.title}」の${label}をブラッシュアップしてください。\n${req?`追加要望：${req}\n`:''}\n最終的に、Story Plannerへそのまま読み込める更新ファイルを1つ作成してください。\nファイル名は story_planner_patch.json とし、format は "sf-story-planner-patch-v1"、operations 配列で変更を表現してください。\n本文で変更案を説明しても構いませんが、アプリへ反映する変更は必ず更新JSONにも含めてください。\n既存内容を無断で全削除せず、設定の意図を尊重してください。`}
+function exportContext(){const p=active();const payload={format:'sf-story-planner-context-v1',exportedAt:new Date().toISOString(),requestedScope:bridgeScope.value,request:bridgeRequest.value.trim(),frameworkVersion:'v9-flex',patchFormat:{format:'sf-story-planner-patch-v1',target:{projectId:p.id,title:p.title},operations:[{op:'set',path:'proposal.oneLine',value:'...'},{op:'append_scene',scene:{title:'',pov:'',place:'',goal:'',event:'',dialogue:'',direction:'',emotion:'',info:'',foreshadow:''}},{op:'upsert_character',name:'人物名',value:{role:'',desire:'',fear:'',misconception:'',change:'',traits:''}}],supportedOperations:['set: known scalar/text path','append_scene: add one scene','replace_scenes: replace all scenes using scenes array','upsert_character: add/update character by name']},project:JSON.parse(JSON.stringify(p))};download(`${safeName(p.title)}_chatgpt_context.json`,JSON.stringify(payload,null,2));showToast('ChatGPT用ファイルを作成しました')}
+async function copyBridgePrompt(){try{await navigator.clipboard.writeText(bridgePrompt());showToast('指示文をコピーしました')}catch{const ta=document.createElement('textarea');ta.value=bridgePrompt();document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('指示文をコピーしました')}}
+function isAllowedSetPath(path){return ['title','genre','length','proposal.oneLine','proposal.protagonist','proposal.surfaceStory','proposal.trueStory','proposal.centralQuestion','proposal.sellingPoint','proposal.aftertaste','proposal.mustScenes','proposal.exclusions','design.themeQuestions','design.valueConflict','design.ambiguity','design.world.canDo','design.world.cannotDo','design.world.society','design.world.dailyLife','design.world.protagonistProblem','design.structure.start','design.structure.inciting','design.structure.deepening','design.structure.crisis','design.structure.reframe','design.structure.ending','design.structure.milestones','design.motifs','design.motifMeaning','design.customFramework'].includes(path)}
+function validatePatch(data){if(!data||data.format!=='sf-story-planner-patch-v1'||!Array.isArray(data.operations))throw new Error('更新JSONの形式が違います。');const p=active();if(data.target?.projectId&&data.target.projectId!==p.id&&data.target?.title!==p.title)throw new Error('対象作品が一致しません。');for(const op of data.operations){if(!['set','append_scene','replace_scenes','upsert_character'].includes(op.op))throw new Error(`未対応の操作: ${op.op}`);if(op.op==='set'&&(!isAllowedSetPath(op.path)||typeof op.value!=='string'))throw new Error(`set操作が不正です: ${op.path}`);if(op.op==='append_scene'&&(!op.scene||typeof op.scene!=='object'))throw new Error('append_scene が不正です');if(op.op==='replace_scenes'&&!Array.isArray(op.scenes))throw new Error('replace_scenes が不正です');if(op.op==='upsert_character'&&(!op.name||!op.value||typeof op.value!=='object'))throw new Error('upsert_character が不正です')}}
+function operationSummary(op,i){if(op.op==='set')return `${i+1}. ${op.path} を更新`;if(op.op==='append_scene')return `${i+1}. シーン追加：${op.scene?.title||op.scene?.event||'新規シーン'}`;if(op.op==='replace_scenes')return `${i+1}. シーンを ${op.scenes.length} 件で置換`;if(op.op==='upsert_character')return `${i+1}. 登場人物「${op.name}」を追加/更新`;return `${i+1}. ${op.op}`}
+function previewPatch(data){validatePatch(data);pendingPatch=data;patchPreview.hidden=false;patchPreview.textContent=`対象: ${data.target?.title||active().title}\n変更数: ${data.operations.length}\n\n`+data.operations.map(operationSummary).join('\n');patchApplyActions.hidden=false}function normalizedScene(s){return {id:uid(),title:s.title||'',pov:s.pov||'',place:s.place||'',goal:s.goal||'',event:s.event||'',dialogue:s.dialogue||'',direction:s.direction||'',emotion:s.emotion||'',info:s.info||'',foreshadow:s.foreshadow||''}}
+async function applyPendingPatch(){if(!pendingPatch)return;const p=active();for(const op of pendingPatch.operations){if(op.op==='set')setPath(p,op.path,op.value);if(op.op==='append_scene')p.scenes.push(normalizedScene(op.scene));if(op.op==='replace_scenes')p.scenes=op.scenes.map(normalizedScene);if(op.op==='upsert_character'){let c=p.design.characters.find(x=>(x.name||'').trim()===(op.name||'').trim());if(!c){c=blankCharacter(op.name);p.design.characters.push(c)}['role','desire','fear','misconception','change','traits'].forEach(k=>{if(typeof op.value[k]==='string')c[k]=op.value[k]});c.name=op.name}}pendingPatch=null;patchPreview.hidden=true;patchApplyActions.hidden=true;await save();renderAll();showToast('ChatGPTの変更を反映しました')}
+chatgptBridgeBtn.onclick=()=>bridgeModal.classList.add('show');closeBridgeBtn.onclick=()=>bridgeModal.classList.remove('show');bridgeModal.addEventListener('click',e=>{if(e.target===bridgeModal)bridgeModal.classList.remove('show')});downloadContextBtn.onclick=exportContext;copyPromptBtn.onclick=copyBridgePrompt;importPatchBtn.onclick=()=>patchFileInput.click();cancelPatchBtn.onclick=()=>{pendingPatch=null;patchPreview.hidden=true;patchApplyActions.hidden=true};applyPatchBtn.onclick=applyPendingPatch;patchFileInput.addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{previewPatch(JSON.parse(await f.text()))}catch(err){alert('更新JSONを読み込めませんでした。\n'+err.message)}e.target.value=''})
+const sidebar=document.querySelector('.sidebar');function openMobileMenu(){sidebar.classList.add('open');mobileOverlay.classList.add('show')}function closeMobileMenu(){sidebar.classList.remove('open');mobileOverlay.classList.remove('show')}mobileMenuBtn.onclick=openMobileMenu;emptyMenuBtn.onclick=openMobileMenu;mobileOverlay.onclick=closeMobileMenu;window.addEventListener('resize',()=>{if(innerWidth>900)closeMobileMenu()});
+(async()=>{await load();renderAll();updateBackupReminder();if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))})();
 </script>
-</body>
-</html>
+</body></html>
